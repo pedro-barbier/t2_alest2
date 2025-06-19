@@ -16,6 +16,7 @@ public class Mapa {
         try {
             FileReader fr = new FileReader(arquivo);
             BufferedReader in = new BufferedReader(fr);
+
             String line = in.readLine();
             String[] cord_xy = line.split(" ");
             height = Integer.parseInt(cord_xy[0]);
@@ -46,17 +47,14 @@ public class Mapa {
 
                 // Ignora
                 if (c == '*') continue;
-
                 // Salva coordenadas de cada porto
                 if (Character.isDigit(c)) {
                     pos_nums[c - 48] = i*width + j;
                 }
-
                 // Conectar vertice atual ao vertice a sua direita
                 if (j+1 < width && lines[i].charAt(j+1) != '*') {
                     grafo.addEdge(i*width + j, (i)*width + j+1);
                 }
-
                 // Conectar vertice atual ao vertice abaixo
                 if (i+1 < height && lines[i+1].charAt(j) != '*') {
                     grafo.addEdge(i*width + j, (i+1)*width + j);

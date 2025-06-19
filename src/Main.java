@@ -1,67 +1,67 @@
 import java.io.*;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Out out = new Out("log.txt");
-        Scanner in = new Scanner(System.in);
-
         File arquivo = new File("src/casosDeTeste");
-        File[] x = arquivo.listFiles();
+        File[] arquivos = arquivo.listFiles();
+        assert arquivos != null;
 
-        System.out.print("Mapas disponiveis: ");
-        for (int i = 0; i < x.length; i++) {
-            System.out.print(x[i].getName() + (i == x.length -1 ? ".\n" : ", "));
-        }
-        System.out.print("Qual mapa deseja procurar o menor caminho? (Por favor informe o index dele: 0, 1, 2, ...) ");
-        int entrada = in.nextInt();
-        in.close();
+        int contador = 0;
+        for (File file : arquivos) {
+            System.out.println("Caminhos do mapa "+contador);
+            Mapa atual = new Mapa(file);
 
-        Mapa atual = new Mapa(x[entrada]);
-
-        char[] map2 = new char[atual.height * atual.width];
-        for (int i = 0; i < atual.height; i++) {
-            for (int j = 0; j < atual.width; j++) {
-                map2[i*atual.width + j] = atual.lines[i].charAt(j);
+            char[] map2 = new char[atual.height * atual.width];
+            for (int i = 0; i < atual.height; i++) {
+                for (int j = 0; j < atual.width; j++) {
+                    map2[i * atual.width + j] = atual.lines[i].charAt(j);
+                }
             }
-        }
 
-        boolean porto_pulado = false;
-        int combustivel_a_gastar = 0;
-        BreadthFirstSearch bfs = new BreadthFirstSearch(atual.grafo, atual.pos_nums[1]);
-        for (int i = 2; i < atual.pos_nums.length+1; i++) {
-            int j = i == 10 ? 1 : i;
-            if (!bfs.hasPath(atual.pos_nums[j])) {
-                System.out.println("Impossível chegar em " + j);
-                porto_pulado = true;
-                continue;
-            };
-            Iterable<Integer> p = bfs.pathTo(atual.pos_nums[j]);
+            int ultimo_porto = 1;
+            int combustivel_a_gastar = 0;
+            BreadthFirstSearch bfs = new BreadthFirstSearch(atual.grafo, atual.pos_nums[1]);
+            for (int i = 2; i < atual.pos_nums.length + 1; i++) {
+                int j = i == 10 ? 1 : i;
 
-            if (i!=10) bfs = new BreadthFirstSearch(atual.grafo, atual.pos_nums[i]);
+                if (!bfs.hasPath(atual.pos_nums[j])) {
+                    System.out.println("Impossível chegar em " + j);
+                    continue;
+                }
+                Iterable<Integer> p = bfs.pathTo(atual.pos_nums[j]);
 
-            System.out.print("Caminho de " + (i==10 ? (porto_pulado ? 8 : 9) : (porto_pulado ? (j-2) : (j-1))) + " para " + j + ": ");
-            porto_pulado = false;
+                if (i != 10) bfs = new BreadthFirstSearch(atual.grafo, atual.pos_nums[i]);
 
-            for (Integer p1 : p) {
-                System.out.print(p1 + " ");
+                System.out.print("Caminho de " + ultimo_porto + " para " + j + ": ");
+                ultimo_porto = i;
 
-                if (!Character.isDigit(map2[p1])) map2[p1] = 'X';
+                for (Integer p1 : p) {
+                    System.out.print(p1 + " ");
 
-                combustivel_a_gastar++;
+                    if (!Character.isDigit(map2[p1])) map2[p1] = 'X';
+
+                    combustivel_a_gastar++;
+                }
+                System.out.println();
+                combustivel_a_gastar--;
             }
+
+            System.out.println("Combustivel a gastar para explorar todos portos possíveis, e retornar ao porto original: " + combustivel_a_gastar);
             System.out.println();
-            combustivel_a_gastar--;
-        }
 
-        for (int i = 0; i < atual.height; i++) {
-            for (int j = 0; j < atual.width; j++) {
-                out.print(map2[i*atual.width + j]);
+            Out out = new Out("mapas_caminho/mapa" + contador + ".txt");
+
+            out.println("Custo mínimo para a viagem: " + combustivel_a_gastar);
+            for (int i = 0; i < atual.height; i++) {
+                for (int j = 0; j < atual.width; j++) {
+                    out.print(map2[i * atual.width + j]);
+                }
+                out.println();
             }
-            out.println();
-        }
+            out.close();
 
-        System.out.println("Combustivel a gastar para explorar todos portos possíveis, e retornar ao porto original: " + combustivel_a_gastar);
+            contador++;
+        }
 
     }
 }
