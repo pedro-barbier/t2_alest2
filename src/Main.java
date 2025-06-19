@@ -1,15 +1,23 @@
 import java.io.*;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Out out = new Out("log.txt");
+        Scanner in = new Scanner(System.in);
+
         File arquivo = new File("src/casosDeTeste");
         File[] x = arquivo.listFiles();
-        System.out.print("Casos a serem testados: ");
+
+        System.out.print("Mapas disponiveis: ");
         for (int i = 0; i < x.length; i++) {
             System.out.print(x[i].getName() + (i == x.length -1 ? ".\n" : ", "));
         }
+        System.out.print("Qual mapa deseja procurar o menor caminho? (Por favor informe o index dele: 0, 1, 2, ...) ");
+        int entrada = in.nextInt();
+        in.close();
 
-        Mapa atual = new Mapa(x[0]);
+        Mapa atual = new Mapa(x[entrada]);
 
         char[] map2 = new char[atual.height * atual.width];
         for (int i = 0; i < atual.height; i++) {
@@ -43,14 +51,14 @@ public class Main {
                 combustivel_a_gastar++;
             }
             System.out.println();
-            combustivel_a_gastar -= 2;
+            combustivel_a_gastar--;
         }
 
         for (int i = 0; i < atual.height; i++) {
             for (int j = 0; j < atual.width; j++) {
-                System.out.print(map2[i*atual.width + j]);
+                out.print(map2[i*atual.width + j]);
             }
-            System.out.println();
+            out.println();
         }
 
         System.out.println("Combustivel a gastar para explorar todos portos possíveis, e retornar ao porto original: " + combustivel_a_gastar);

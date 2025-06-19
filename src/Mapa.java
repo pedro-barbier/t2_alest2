@@ -7,6 +7,11 @@ public class Mapa {
     public int[] pos_nums = new int[10];
     Graph grafo;
 
+    public Mapa(File arquivo) {
+        LerArquivo(arquivo);
+        initializeGraph();
+    }
+
     public void LerArquivo(File arquivo) {
         try {
             FileReader fr = new FileReader(arquivo);
@@ -18,11 +23,8 @@ public class Mapa {
 
             lines = new String[height];
 
-            System.out.println("Mapa atual:");
             for (int i = 0; i < height; i++) {
                 line = in.readLine();
-                System.out.println(line);
-
 
                 lines[i] = line;
             }
@@ -64,11 +66,5 @@ public class Mapa {
 
         }
 
-    }
-
-
-    public Mapa(File arquivo) {
-        LerArquivo(arquivo);
-        initializeGraph();
     }
 }

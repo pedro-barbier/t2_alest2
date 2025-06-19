@@ -12,6 +12,9 @@ public class BreadthFirstSearch{
         edgeTo=new int [g.V()];
         distTo=new int [g.V()];
         marked=new boolean [g.V()];
+        edgeTo[ref] = ref;           // marca o pai do nó de origem como ele próprio
+        distTo[ref] = 0;             //
+        marked[ref] = true;          //
         bfs(g,s);
     }
 
