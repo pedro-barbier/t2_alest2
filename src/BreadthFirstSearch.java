@@ -36,7 +36,6 @@ public class BreadthFirstSearch{
                     q.add(adj);
                 }
         }
-
     }
 
     public boolean hasPath(int v){
@@ -55,34 +54,5 @@ public class BreadthFirstSearch{
         return b;
 
     }
-
-    public static void main(String[] args) {
-        In in = new In(args[0]);
-        Graph G = new Graph(in);
-        StdOut.println(G);
-        StdOut.println();
-        StdOut.println(G.toDot());
-
-        System.out.println("Estou na classe Caminhamento Em Profundidade...");
-
-        BreadthFirstSearch cep = new BreadthFirstSearch(G, 0);
-        System.out.println("Existe um caminho para o 3? "+(cep.hasPath(3)?"SIM":"NÃO"));
-        if(cep.hasPath(3)){
-            for(int p: cep.pathTo(3))
-                System.out.print(p+"; ");
-            System.out.println();
-        }
-
-        System.out.println("Existe um caminho para o 4? "+(cep.hasPath(4)?"SIM":"NÃO"));
-        if(cep.hasPath(4)){
-            for(int p: cep.pathTo(4))
-                System.out.print(p+"; ");
-            System.out.println();
-        }
-
-
-    }
-
-
 
 }

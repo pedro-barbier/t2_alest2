@@ -28,12 +28,10 @@ public class Main {
                     System.out.println("Impossível chegar em " + j);
                     continue;
                 }
-                Iterable<Integer> p = bfs.pathTo(atual.pos_nums[j]);
-
-                if (i != 10) bfs = new BreadthFirstSearch(atual.grafo, atual.pos_nums[i]);
-
                 System.out.print("Caminho de " + ultimo_porto + " para " + j + ": ");
                 ultimo_porto = i;
+
+                Iterable<Integer> p = bfs.pathTo(atual.pos_nums[j]);
 
                 for (Integer p1 : p) {
                     System.out.print(p1 + " ");
@@ -44,7 +42,10 @@ public class Main {
                 }
                 System.out.println();
                 combustivel_a_gastar--;
+
+                if (i != 10) bfs = new BreadthFirstSearch(atual.grafo, atual.pos_nums[i]);
             }
+
 
             System.out.println("Combustivel a gastar para explorar todos portos possíveis, e retornar ao porto original: " + combustivel_a_gastar);
             System.out.println();

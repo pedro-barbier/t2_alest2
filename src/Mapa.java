@@ -1,11 +1,11 @@
 import java.io.*;
 
 public class Mapa {
-    public int height;
-    public int width;
-    public String[] lines;
-    public int[] pos_nums = new int[10];
-    Graph grafo;
+    public int height; // Quantidade de linhas do mapa
+    public int width; // Quantidade de colunas do mapa
+    public String[] lines; // O mapa convertido em uma lista de strings de suas linhas (utilizado para coordenadas)
+    public int[] pos_nums = new int[10]; // Coordenadas dos portos no mapa
+    Graph grafo; // Grafo do mapa indicando pontos navegaveis
 
     public Mapa(File arquivo) {
         LerArquivo(arquivo);
@@ -23,7 +23,6 @@ public class Mapa {
             width = Integer.parseInt(cord_xy[1]);
 
             lines = new String[height];
-
             for (int i = 0; i < height; i++) {
                 line = in.readLine();
 
@@ -43,9 +42,9 @@ public class Mapa {
         for (int i = 0; i < height; i++) {
 
             for (int j = 0; j < width; j++) {
-                char c = lines[i].charAt(j);
+                char c = lines[i].charAt(j); // Caractere atual
 
-                // Ignora
+                // Ignora posições inacessiveis
                 if (c == '*') continue;
                 // Salva coordenadas de cada porto
                 if (Character.isDigit(c)) {
